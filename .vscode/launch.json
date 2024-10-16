@@ -1,0 +1,49 @@
+{
+    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch with Arguments Prompt",
+            "request": "launch",
+            "mainClass": "main",
+            "args": "12,13"
+        },
+        {
+            "type": "java",
+            "name": "Sum",
+            "request": "launch",
+            "mainClass": "Sum",
+            "projectName": "Programmierung1_70fba46c"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Echo",
+            "request": "launch",
+            "mainClass": "Echo",
+            "projectName": "Programmierung1_70fba46c"
+        },
+        {
+            "type": "java",
+            "name": "Hello",
+            "request": "launch",
+            "mainClass": "Hello",
+            "projectName": "Programmierung1_70fba46c"
+        },
+        {
+            "type": "java",
+            "name": "Ican",
+            "request": "launch",
+            "mainClass": "Ican",
+            "projectName": "Programmierung1_70fba46c"
+        }
+    ]
+}
