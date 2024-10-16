@@ -17,7 +17,7 @@ public class Matches {
     }
 
     static boolean matchesD(String string){
-        return string.matches("[1-9][0-9]*[w|d]");
+        return string.matches("[1-9][0-9]*[w|m|d]");
     }
     
 }
