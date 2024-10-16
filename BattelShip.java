@@ -4,7 +4,7 @@ public class BattelShip {
 
     public enum Field {FREE, SHIP, SHIP_HIT,WATER_HIT}
 
-    final int size = 10;
+    static final int SIZE = 10;
 
     static int distance(final Coordinate start, final Coordinate end){
 
@@ -12,8 +12,8 @@ public class BattelShip {
     }
 
     static Coordinate getRandomCoordinate(){
-        int row = Utility.getRandomInt(10);
-        int column = Utility.getRandomInt(10);
+        int row = Utility.getRandomInt(SIZE);
+        int column = Utility.getRandomInt(SIZE);
         Coordinate returnCoordinate = new Coordinate(row, column);
         return returnCoordinate;
     }
