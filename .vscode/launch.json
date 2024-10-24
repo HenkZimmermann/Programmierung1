@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "BattelShip",
+            "request": "launch",
+            "mainClass": "BattelShip",
+            "projectName": "Programmierung1_70fba46c"
+        },
+        {
+            "type": "java",
             "name": "Launch with Arguments Prompt",
             "request": "launch",
             "mainClass": "main",

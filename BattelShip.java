@@ -68,18 +68,18 @@ public class BattelShip {
 
     static Coordinate toCoordinate(final String input) {
         int x = (int) input.toUpperCase().charAt(0) - 65;
-        return new Coordinate(x, Integer.parseInt(input.substring(1)));
+        return new Coordinate(x, Integer.parseInt(input.substring(1))-1);
     }
 
     static boolean isValidCoordinate(final String input){
         int x = (int) input.toUpperCase().charAt(0) - 65;
-        if(x<=10 && Integer.parseInt(input.substring(1))<=10){
+        if(x<=10 && x>0 && Integer.parseInt(input.substring(1))<=10){
             return true;
 
         }
         else return false;
     }
-    static final String ENTER_SHIP_COORDINATE_PROMPT = String.format("Geben Sie die %skoordinate für ein Schiff der Länge %d ein");
+    static final String ENTER_SHIP_COORDINATE_PROMPT =  ("Geben Sie die %skoordinate für ein Schiff der Länge %d ein");
 
 
     static String getStartCoordinatePrompt(final int length){
@@ -90,6 +90,10 @@ public class BattelShip {
     static String getEndCoordinatePrompt(final int length){
         String returnString =String.format(ENTER_SHIP_COORDINATE_PROMPT,"End", length);
         return returnString;
+    }
+
+    public static void main(String[]args){
+        System.out.println(toCoordinate("A10"));
     }
 
 
