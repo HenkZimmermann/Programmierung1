@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class BattelShip {
 
     public record Coordinate(int column, int row) {
@@ -72,12 +75,7 @@ public class BattelShip {
     }
 
     static boolean isValidCoordinate(final String input){
-        int x = (int) input.toUpperCase().charAt(0) - 65;
-        if(x<=10 && x>0 && Integer.parseInt(input.substring(1))<=10){
-            return true;
-
-        }
-        else return false;
+        return input.matches("[a-jA-j](10|[1-9])");
     }
     static final String ENTER_SHIP_COORDINATE_PROMPT =  ("Geben Sie die %skoordinate für ein Schiff der Länge %d ein");
 
@@ -92,6 +90,84 @@ public class BattelShip {
         return returnString;
     }
 
+    static void showRowNumber(final int row){
+        if(row<9){
+            System.out.print(" ");
+        }
+        System.out.print(row+1);
+
+        
+    }
+    static String grade(final int points){
+        if(points>=100 &&points>0){
+            if(points<=49){
+                return "5.0";
+            }
+            else if(points<=58 && points>49 ){
+                return "4.0";
+            }
+            else if(points<=66 && points>=58 ){
+                return "3.7";
+            }
+            else if(points<=71 && points>=67 ){
+                return "3.3";
+            }
+            else if(points<=76 && points>=72 ){
+                return "3.0";
+            }
+            else if(points<=80 && points>=77 ){
+                return "2.7";
+            }
+            else if(points<=84 && points>=81 ){
+                return "2.3";
+            }
+            else if(points<=88 && points>=85 ){
+                return "2.0";
+            }
+            else if(points<=91 && points>=89 ){
+                return "1.7";
+            }
+            else if(points<=96 && points>=92 ){
+                return "1.3";
+            }
+            return "1.0";
+            
+        }
+        else return "Ungültige Punktezahl";
+    }
+
+    static boolean isCoordinate(final Coordinate input){
+        if(input.column()>=0 &&input.column()<=9 && input.row()>=0 &&input.row()<=9){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    static Coordinate getRandomEndCoordinate(final Coordinate start, final int distance){
+
+      
+        int index = Utility.getRandomInt(4);
+
+        Coordinate[] cord = new Coordinate[]{
+            new Coordinate(start.column() - distance, start.row),
+            new Coordinate(start.column() + distance, start.row),
+            new Coordinate(start.column(), start.row()-distance),
+            new Coordinate(start.column(), start.row()+distance)
+        };
+
+
+        while(!isCoordinate(cord[index])){
+            index = Utility.getRandomInt(4);
+        }
+        return cord[index];
+
+
+    }
+
+    static void showField(final Field field, final boolean showShips){
+        
+    }
     public static void main(String[]args){
         System.out.println(toCoordinate("A10"));
     }
