@@ -195,15 +195,15 @@ public class BattelShip {
 
                 }
               break;
-            case FREE:
-               System.out.println(" ");
-              break;
             case WATER_HIT:
               System.out.println("x");
               break;
             case SHIP_HIT:
               System.out.println("*");
               break;
+            case FREE:
+            default:
+               System.out.println(" ");
           }
         
     }
@@ -221,11 +221,47 @@ public class BattelShip {
     static void placeShip(final Coordinate start, final Coordinate end, final Field[][] field){
         for(int i=0; i < SIZE; i++){
             for(int j = 0; j<SIZE;j++){
-                if(start.column == j && start.row == i )
+                if(i >= start.column && i<= end.column ||  j >= start.row && j <= end.row){
+                    field[i][j] = Field.SHIP;                
+                }
+                
             }
         }
 
     }
+    static void showRow(final int row, final Field[][] ownField, final Field[][] otherField){
+        String startString;
+        if(row <10){
+            startString=" "+row+"|";
+        }else{
+            startString=row+"|";
+  
+        }
+        System.out.print(startString);
+        for(int i = 0; i> ownField[row].length; i++){
+            showField(ownField[row][i], true);
+        }
+        System.out.println("   "+startString);
+        for(int i = 0; i> ownField[row].length; i++){
+            showField(otherField[row][i], false);
+        }
+        System.out.print("\n");
+
+    }
+    static void showFields(final Field[][] ownField, final Field[][] otherField){
+        System.out.println("    A B C D E F G H I J        A B C D E F G H I J");
+        showSeperatorLine();
+        for(int i = 0; i>SIZE; i++){
+            showRow(i,ownField,otherField);
+            showSeperatorLine();
+        }
+        System.out.print("\n");
+
+    }
+    static boolean shipSunk(final Coordinate shot, final Field[][] field){
+        
+    }
+
     public static void main(String[]args){
         System.out.println(toCoordinate("A10"));
     }
