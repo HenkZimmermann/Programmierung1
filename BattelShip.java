@@ -1,4 +1,6 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BattelShip {
 
@@ -164,37 +166,18 @@ public class BattelShip {
 
     }
     static Coordinate getRandomEndCoordinate1(final Coordinate start, final int distance){
-        int index = -1;
-        if(isCoordinate(new Coordinate(start.column() - distance, start.row))){
-            index =+1;
+        List<Coordinate> validEndCoordinates = new ArrayList<>();
+        if(isCoordinate(new Coordinate(start.column - distance, start.row))){
+            validEndCoordinates.add(new Coordinate(start.column - distance, start.row));
         }
-        if(isCoordinate(new Coordinate(start.column() + distance, start.row))){
-            index =+1;
+        if(isCoordinate(new Coordinate(start.column + distance, start.row))){
+            validEndCoordinates.add(new Coordinate(start.column + distance, start.row));
+        }if(isCoordinate(new Coordinate(start.column, start.row-distance))){
+            validEndCoordinates.add(new Coordinate(start.column, start.row-distance));
+        }if(isCoordinate(new Coordinate(start.column, start.row+distance))){
+            validEndCoordinates.add(new Coordinate(start.column, start.row+distance));
         }
-        if(isCoordinate(new Coordinate(start.column(), start.row()-distance))){
-            index =+1;
-        }
-        if(isCoordinate(new Coordinate(start.column(), start.row()+distance))){
-            index =+1;
-        }
-        int random = Utility.getRandomInt(index);
-
-        int number = (4-index) + random;
-        if(number == 1){
-            return new Coordinate(start.column() - distance, start.row);
-        }
-        else if(number == 2){
-            return new Coordinate(start.column() + distance, start.row);
-        }
-        else if(number == 3){
-            return new Coordinate(start.column(), start.row()-distance);
-        }
-        else if(number == 4){
-            return new  Coordinate(start.column(), start.row()+distance);
-        }
-        else{return new  Coordinate(0,0);
-        }
-
+        return validEndCoordinates.get(Utility.getRandomInt(validEndCoordinates.size()));
 
     }
 
@@ -223,6 +206,25 @@ public class BattelShip {
               break;
           }
         
+    }
+
+    static int max(final int[] array){
+        int highestNumber = 0;
+        for(int i = 0; i < array.length; i++){
+            if(array[i]>highestNumber){
+                highestNumber = array[i];
+            }
+        }           
+        return highestNumber;
+    }
+
+    static void placeShip(final Coordinate start, final Coordinate end, final Field[][] field){
+        for(int i=0; i < SIZE; i++){
+            for(int j = 0; j<SIZE;j++){
+                if(start.column == j && start.row == i )
+            }
+        }
+
     }
     public static void main(String[]args){
         System.out.println(toCoordinate("A10"));
