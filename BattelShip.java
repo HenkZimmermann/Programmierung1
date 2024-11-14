@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -384,12 +383,66 @@ public class BattelShip {
         }
 
     }
+    static ArrayList<Coordinate> inBetween(final Coordinate start,final Coordinate end){
 
+        ArrayList<Coordinate> cords = new ArrayList<Coordinate>();
+        cords.add(start);
+        cords.add(end);
+        if(start.row == end.row){
+            for(int i=1; i<Math.abs(start.row-end.row);i++){
+                int min = Math.min(start.row, end.row);
+                cords.add(new Coordinate(start.column, min+i));
+            }
+        }
+        else if(start.column == end.column){
+            for(int i=1; i<Math.abs(start.column-end.column);i++){
+                int min = Math.min(start.row, end.column);
+                cords.add(new Coordinate(min+i,start.row));
+            }
+
+        }
+
+        return cords;
+    }
 
     static boolean noConflict(final Coordinate start, final Coordinate end, final Field[][]field){
+        ArrayList<Coordinate> cords = inBetween(start, end);
+        Boolean returnState = false;
+        while(!cords.isEmpty()){
+            Coordinate currentCord = cords.get(0);
+            if(!isInList(new Coordinate(currentCord.column,currentCord.row-1), cords)){
+                if(field[currentCord.column][currentCord.row-1] != Field.SHIP){
+                    returnState = true;
 
+                }
+                else{return false;}
+            }
+            if(!isInList(new Coordinate(currentCord.column,currentCord.row+1), cords)){
+                if(field[currentCord.column][currentCord.row+1] != Field.SHIP){
+                    returnState = true;
 
-        return false;
+                }
+                else{return false;}
+            }
+            if(!isInList(new Coordinate(currentCord.column-1,currentCord.row), cords)){
+                if(field[currentCord.column-1][currentCord.row] != Field.SHIP){
+                    returnState = true;
+
+                }
+                else{return false;}
+            }
+            if(!isInList(new Coordinate(currentCord.column+1,currentCord.row), cords)){
+                if(field[currentCord.column+1][currentCord.row] != Field.SHIP){
+                    returnState = true;
+
+                }
+                else{return false;}
+            }
+            else{return false;};
+            cords.remove(0);
+        }
+
+        return returnState;
     }
 
 
