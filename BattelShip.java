@@ -209,7 +209,7 @@ public class BattelShip {
     }
 
     static int max(final int[] array){
-        int highestNumber = 0;
+        int highestNumber = Integer.MIN_VALUE;
         for(int i = 0; i < array.length; i++){
             if(array[i]>highestNumber){
                 highestNumber = array[i];
@@ -258,9 +258,141 @@ public class BattelShip {
         System.out.print("\n");
 
     }
+    static ArrayList<Coordinate> getShipCoordinates(final Coordinate coordinate, final Field[][] field){
+        ArrayList<Coordinate> cordsList = new ArrayList<Coordinate>(); 
+        ArrayList<Coordinate> zuPruefen = new ArrayList<Coordinate>(); 
+        cordsList.add(coordinate);
+        zuPruefen.add(coordinate);
+
+
+        while(!zuPruefen.isEmpty()){
+            Coordinate aktCord = zuPruefen.get(0);
+            if(field[aktCord.row][aktCord.column-1] == Field.SHIP||field[aktCord.row][aktCord.column-1]==Field.SHIP_HIT && !isInList(new Coordinate(aktCord.row, aktCord.column -1),cordsList)){
+                cordsList.add(new Coordinate(aktCord.row, aktCord.column -1));
+                zuPruefen.add(new Coordinate(aktCord.row, aktCord.column -1));
+
+            }
+            if(field[aktCord.row-1][aktCord.column] == Field.SHIP|| field[aktCord.row-1][aktCord.column] == Field.SHIP_HIT&& !isInList(new Coordinate(aktCord.row-1, aktCord.column),cordsList)){
+                cordsList.add(new Coordinate(aktCord.row-1, aktCord.column));
+                zuPruefen.add(new Coordinate(aktCord.row-1, aktCord.column));
+
+            }
+            if(field[aktCord.row][aktCord.column+1] == Field.SHIP||field[aktCord.row][aktCord.column+1] == Field.SHIP_HIT&& !isInList(new Coordinate(aktCord.row, aktCord.column +1),cordsList)){
+                cordsList.add(new Coordinate(aktCord.row, aktCord.column +1));
+                zuPruefen.add(new Coordinate(aktCord.row, aktCord.column +1));
+
+            }
+            if(field[aktCord.row+1][aktCord.column] == Field.SHIP||field[aktCord.row+1][aktCord.column] == Field.SHIP&& !isInList(new Coordinate(aktCord.row+1, aktCord.column),cordsList)){
+                cordsList.add(new Coordinate(aktCord.row+1, aktCord.column));
+                zuPruefen.add(new Coordinate(aktCord.row+1, aktCord.column));
+
+            }
+            zuPruefen.remove(0);
+
+        }
+
+        return cordsList;
+    }
+
+    static boolean isInList(final Coordinate coordinate,final ArrayList<Coordinate> coordinateList){
+        for(int i =0; i< coordinateList.size();i++){
+            if(coordinate.row == coordinateList.get(i).row &&coordinate.column == coordinateList.get(i).column)
+            return true;
+        }
+        return false;
+    }
     static boolean shipSunk(final Coordinate shot, final Field[][] field){
+        Boolean returnState = false;
+        ArrayList<Coordinate> coordinateList = getShipCoordinates(shot, field);
+        ArrayList<Field> fieldList = new ArrayList<Field>();
+
+        while(!coordinateList.isEmpty()){
+            fieldList.add(field[coordinateList.get(0).row][coordinateList.get(0).column]);
+            coordinateList.remove(0);
+        }
+        
+    
+        for(int i=0; i<fieldList.size();i++){
+            if(fieldList.get(0) == Field.SHIP){
+                return false;
+            }
+            else{returnState = true;}
+
+        }
+        return returnState;
+        
+
         
     }
+    /*  Aufgabe2a)
+    int i = 0;
+    while(i<bediungung){
+        i++;
+    }
+
+    
+    while(true){
+
+
+        if(Abbruchbedungung){
+            break;
+        }
+    }
+    */
+
+    static void setAllFree(final Field[][]field){
+        int rows = field.length;
+        int column = field[0].length;
+        for(int i = 0; i< rows;i++){
+            for(int j = 0; j< column;j++){
+
+                field[i][j] = Field.FREE;
+            }
+        }
+    
+    }
+    static int countHits(final Field[][]field){
+        int rows = field.length;
+        int column = field[0].length;
+        int hits =0;
+        for(int i = 0; i< rows;i++){
+            for(int j = 0; j< column;j++){
+                if(field[i][j] == Field.SHIP_HIT){
+                    hits ++;
+                }
+            }
+        }
+        return hits;
+    
+    }
+
+    static void fillWaterHits(final Coordinate shot, final Field[][] field){
+        ArrayList<Coordinate> coordinateList = getShipCoordinates(shot, field);
+        for(int i=0; i< coordinateList.size(); i++){
+            if(field[coordinateList.get(i).row+1][coordinateList.get(i).column] != Field.SHIP_HIT){
+                field[coordinateList.get(i).row+1][coordinateList.get(i).column] = Field.WATER_HIT;
+            }
+            if(field[coordinateList.get(i).row][coordinateList.get(i).column+1] != Field.SHIP_HIT){
+                field[coordinateList.get(i).row][coordinateList.get(i).column+1] = Field.WATER_HIT;
+            }
+            if(field[coordinateList.get(i).row-1][coordinateList.get(i).column] != Field.SHIP_HIT){
+                field[coordinateList.get(i).row-1][coordinateList.get(i).column] = Field.WATER_HIT;
+            }
+            if(field[coordinateList.get(i).row][coordinateList.get(i).column-1] != Field.SHIP_HIT){
+                field[coordinateList.get(i).row][coordinateList.get(i).column-1] = Field.WATER_HIT;
+            }
+        }
+
+    }
+
+
+    static boolean noConflict(final Coordinate start, final Coordinate end, final Field[][]field){
+
+
+        return false;
+    }
+
+
 
     public static void main(String[]args){
         System.out.println(toCoordinate("A10"));
