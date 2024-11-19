@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,6 +209,9 @@ public class BattelShip {
     }
 
     static int max(final int[] array){
+        if(array.length<1){
+            throw new IllegalArgumentException();
+        }
         int highestNumber = Integer.MIN_VALUE;
         for(int i = 0; i < array.length; i++){
             if(array[i]>highestNumber){
@@ -445,11 +449,50 @@ public class BattelShip {
         return returnState;
     }
 
+    static Coordinate readCoordinate(final String prompt){
+        String input ="";
+        Coordinate returnCoordinate = new Coordinate(SIZE, SIZE);
+        while(!isValidCoordinate(input)  || input =="exit"){
+            try{
+                input =  Utility.readStringFromConsole();
+
+            }
+
+            catch(IOException e){
+                
+
+            }
+        }
+        if(input == "exit"){
+            System.exit(0);
+        }
+        else{
+             returnCoordinate = new Coordinate(Integer.parseInt(input.substring(0,1)),Integer.parseInt(input.substring(1,2)));
+        }
+        return returnCoordinate;
+
+    }
+
+
+    static Coordinate getRandomUnshotCoordinate(final Field[][] field) throws Exception{
+        Coordinate retCoordinate = null;
+        int i = 0;
+        while (i< (SIZE*SIZE)&&retCoordinate == null) {
+            Coordinate randomCoordinate = getRandomCoordinate();
+            if(field[randomCoordinate.column][randomCoordinate.row] == Field.SHIP_HIT||field[randomCoordinate.column][randomCoordinate.row] == Field.WATER_HIT){
+                return randomCoordinate;
+            }       
+        }
+        throw new IllegalStateException();
+    }
+
 
 
     public static void main(String[]args){
-        System.out.println(toCoordinate("A10"));
+        Field [][] feld = new Field[SIZE][SIZE];
+        
     }
+    
 
 
 }
