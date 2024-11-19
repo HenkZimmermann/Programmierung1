@@ -582,11 +582,11 @@ public class BattelShip {
     static Field[][] intiOwnField(){
         Field [][] field = new Field[SIZE][SIZE];
         for(int i =0;i<4;i++){
-            Coordinate startCord = getRandomCoordinate();
-            Coordinate endCord = getRandomEndCoordinate(startCord,i);
+            Coordinate startCord = readStartCoordinate(i);
+            Coordinate endCord =readEndCoordinate(i);            
             while (!noConflict(startCord,endCord,field)) {
-                startCord = getRandomCoordinate();
-                endCord = getRandomEndCoordinate(startCord,i); 
+                startCord = readStartCoordinate(i);
+                endCord =readEndCoordinate(i);  
             }
             placeShip(startCord, endCord, field);
         }
@@ -598,12 +598,15 @@ public class BattelShip {
 
 
     public static void main(String[]args){
+        System.out.println(" ");
+        Field[][] otherField = intiOtherField();
+        Field[][] ownField = intiOwnField();
+        showFields(otherField,ownField);
     
         
 
         
     }
     
-
 
 }
