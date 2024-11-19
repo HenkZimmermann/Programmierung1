@@ -210,7 +210,7 @@ public class BattelShip {
 
     static int max(final int[] array){
         if(array.length<1){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Array muss mindestens ein Element enthalten");
         }
         int highestNumber = Integer.MIN_VALUE;
         for(int i = 0; i < array.length; i++){
@@ -451,7 +451,6 @@ public class BattelShip {
 
     static Coordinate readCoordinate(final String prompt){
         String input ="";
-        Coordinate returnCoordinate = new Coordinate(SIZE, SIZE);
         while(!isValidCoordinate(input)  || input =="exit"){
             try{
                 input =  Utility.readStringFromConsole();
@@ -466,10 +465,8 @@ public class BattelShip {
         if(input == "exit"){
             System.exit(0);
         }
-        else{
-             returnCoordinate = new Coordinate(Integer.parseInt(input.substring(0,1)),Integer.parseInt(input.substring(1,2)));
-        }
-        return returnCoordinate;
+        
+        return toCoordinate(input);
 
     }
 
@@ -490,6 +487,7 @@ public class BattelShip {
 
     public static void main(String[]args){
         Field [][] feld = new Field[SIZE][SIZE];
+
         
     }
     
