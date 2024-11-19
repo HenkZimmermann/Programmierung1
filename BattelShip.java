@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class BattelShip {
 
     public record Coordinate(int column, int row) {
@@ -12,6 +13,7 @@ public class BattelShip {
     }
 
     static final int SIZE = 10;
+    static final int ALL_HIT = 14;
 
     static int distance(final Coordinate start, final Coordinate end) {
 
@@ -79,7 +81,6 @@ public class BattelShip {
         return input.matches("[a-jA-j](10|[1-9])");
     }
     static final String ENTER_SHIP_COORDINATE_PROMPT =  ("Geben Sie die %skoordinate für ein Schiff der Länge %d ein");
-
 
     static String getStartCoordinatePrompt(final int length){
         String returnString =String.format(ENTER_SHIP_COORDINATE_PROMPT,"Start", length);
@@ -450,6 +451,7 @@ public class BattelShip {
     }
 
     static Coordinate readCoordinate(final String prompt){
+        System.out.print(prompt);
         String input ="";
         while(!isValidCoordinate(input)  || input =="exit"){
             try{
@@ -472,21 +474,132 @@ public class BattelShip {
 
 
     static Coordinate getRandomUnshotCoordinate(final Field[][] field) throws Exception{
-        Coordinate retCoordinate = null;
-        int i = 0;
-        while (i< (SIZE*SIZE)&&retCoordinate == null) {
-            Coordinate randomCoordinate = getRandomCoordinate();
-            if(field[randomCoordinate.column][randomCoordinate.row] == Field.SHIP_HIT||field[randomCoordinate.column][randomCoordinate.row] == Field.WATER_HIT){
-                return randomCoordinate;
-            }       
+        ArrayList<Coordinate> cordsListe = new ArrayList<Coordinate>();
+        for(int i = 0; i < field.length; i++){
+            for(int j = 0; j < field[0].length; j++){
+                if(field[i][j]!= Field.SHIP_HIT ||field[i][j]!= Field.WATER_HIT){
+                    cordsListe.add(new Coordinate(i,j));
+                }
+
+            }
         }
-        throw new IllegalStateException();
+        if(cordsListe.isEmpty()){
+            throw new IllegalStateException("keine Coordinate mehr vorhanden");
+
+        }
+        return cordsListe.get(Utility.getRandomInt(cordsListe.size()));
+    }
+
+    static Coordinate readEndCoordinate(final int length){
+        return readCoordinate(getEndCoordinatePrompt(length));
+
+    }
+    static Coordinate readStartCoordinate(final int length){
+        return readCoordinate(getStartCoordinatePrompt(length));
+        
+
+    }
+
+    static boolean allHit(final Field [][] field){
+        int count = 0;
+        for(int i = 0; i < field.length; i++){
+            for(int j = 0; j < field[0].length; j++){
+                if(field[i][j]!= Field.SHIP_HIT){
+                    count ++;
+                }
+
+            }
+        }
+        if(count == ALL_HIT){
+            return true;
+        }
+        else{return false;}
+    }
+    static boolean endCondition(final Field[][] ownField, final Field[][]otherField){
+        if(allHit(ownField)||allHit(otherField)){
+            return true;
+        }
+        else return false;
+    }
+    static boolean validPosition(final Coordinate start, final Coordinate end, final int length, final Field[][]field){
+
+        if(Math.abs(start.column-end.column)!= length ||Math.abs(start.row-end.row) != length){
+            throw new RuntimeException("falsche Lenth oder Coordinaten uebergeben");
+        }
+        return noConflict(start, end, field);
+    }
+
+
+    static void shot(final Coordinate shot, Field[][] field){
+        switch (field[shot.column][shot.row]) {
+            case SHIP:
+                field[shot.column][shot.row] = Field.SHIP_HIT;
+                if(shipSunk(shot, field)){
+                    fillWaterHits(shot, field);
+                }
+            break;
+            case FREE:
+                field[shot.column][shot.row] = Field.WATER_HIT;
+                break;
+        
+            default:
+                break;
+        }
+    }
+    static void turn(final Field[][] ownField, final Field[][] otherField){
+        showFields(ownField,otherField);
+        shot(readCoordinate("Feld treffen:"),otherField);
+        Coordinate cord = getRandomCoordinate();
+        while(ownField[cord.row][cord.column] !=Field.FREE||ownField[cord.row][cord.column] !=Field.SHIP){
+            cord = getRandomCoordinate();
+        }
+        shot(cord,ownField);
+    }
+    static void outputWinner(final Field[][] ownField, final Field[][] otherField){
+        if(allHit(ownField)){
+            System.out.println("Du hast gewonnen!!");
+        }
+        if(allHit(otherField)){
+            System.out.println("Der Computer hat gewonnen!!");
+        }
+    }
+
+    static Field[][] intiOtherField(){
+        Field [][] field = new Field[SIZE][SIZE];
+        for(int i =0;i<4;i++){
+            Coordinate startCord = getRandomCoordinate();
+            Coordinate endCord = getRandomEndCoordinate(startCord,i);
+            while (!noConflict(startCord,endCord,field)) {
+                startCord = getRandomCoordinate();
+                endCord = getRandomEndCoordinate(startCord,i); 
+            }
+            placeShip(startCord, endCord, field);
+        }
+        return field;
+    }
+
+    
+    static Field[][] intiOwnField(){
+        Field [][] field = new Field[SIZE][SIZE];
+        for(int i =0;i<4;i++){
+            Coordinate startCord = getRandomCoordinate();
+            Coordinate endCord = getRandomEndCoordinate(startCord,i);
+            while (!noConflict(startCord,endCord,field)) {
+                startCord = getRandomCoordinate();
+                endCord = getRandomEndCoordinate(startCord,i); 
+            }
+            placeShip(startCord, endCord, field);
+        }
+        return field;
     }
 
 
 
+
+
     public static void main(String[]args){
-        Field [][] feld = new Field[SIZE][SIZE];
+    
+        
 
         
     }
