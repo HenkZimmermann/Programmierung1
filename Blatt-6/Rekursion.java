@@ -21,7 +21,8 @@ public class Rekursion {
         retString = retString + toString1(new SignlyLinkedList(list.root.next()));
         return retString;
     }
-    
+        
+   
     static SignlyLinkedList addLast(final SignlyLinkedList list, final int value){
         if(list.root.next() == null){
             ListNode lastNode = new ListNode(value,null);
@@ -38,7 +39,8 @@ public class Rekursion {
         if(list.root.value() == value){
             return new SignlyLinkedList(list.root.next());
         }
-        return remove(new SignlyLinkedList(list.root.next()),value);
+        ListNode node = new ListNode (list.root.value(), remove(new SignlyLinkedList(list.root.next()), value).root());
+        return new SignlyLinkedList(node);
 
     }
 
@@ -55,7 +57,7 @@ public class Rekursion {
         SignlyLinkedList sll = new SignlyLinkedList(kn2);
         sll = addLast(sll, 19);
         sll = addLast(sll, 17);
-        sll = remove(sll, 17);
+        sll = remove(sll, 19);
 
 
         System.out.print(toString1(sll));
