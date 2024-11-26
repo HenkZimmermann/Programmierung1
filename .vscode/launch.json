@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Rekursion",
+            "request": "launch",
+            "mainClass": "Rekursion",
+            "projectName": "Programmierung1_70fba46c"
+        },
+        {
+            "type": "java",
             "name": "BattelShip",
             "request": "launch",
             "mainClass": "BattelShip",

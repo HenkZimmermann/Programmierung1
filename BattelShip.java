@@ -80,7 +80,7 @@ public class BattelShip {
     static boolean isValidCoordinate(final String input){
         return input.matches("[a-jA-j](10|[1-9])");
     }
-    static final String ENTER_SHIP_COORDINATE_PROMPT =  ("Geben Sie die %skoordinate für ein Schiff der Länge %d ein");
+    static final String ENTER_SHIP_COORDINATE_PROMPT =  ("Geben Sie die %skoordinate für ein Schiff der Länge %d ein: ");
 
     static String getStartCoordinatePrompt(final int length){
         String returnString =String.format(ENTER_SHIP_COORDINATE_PROMPT,"Start", length);
@@ -146,8 +146,8 @@ public class BattelShip {
             return false;
         }
     }
-    static Coordinate getRandomEndCoordinate(final Coordinate start, final int distance){
-
+    static Coordinate getRandomEndCoordinate(final Coordinate start, int distance){
+        distance--;
       
         int index = Utility.getRandomInt(4);
 
@@ -416,28 +416,28 @@ public class BattelShip {
         while(!cords.isEmpty()){
             Coordinate currentCord = cords.get(0);
             if(!isInList(new Coordinate(currentCord.column,currentCord.row-1), cords)){
-                if(field[currentCord.column][currentCord.row-1] != Field.SHIP){
+                if(isCoordinate(new Coordinate(currentCord.column,currentCord.row-1)) &&field[currentCord.column][currentCord.row-1] != Field.SHIP){
                     returnState = true;
 
                 }
                 else{return false;}
             }
             if(!isInList(new Coordinate(currentCord.column,currentCord.row+1), cords)){
-                if(field[currentCord.column][currentCord.row+1] != Field.SHIP){
+                if(isCoordinate(new Coordinate(currentCord.column,currentCord.row+1)) && field[currentCord.column][currentCord.row+1] != Field.SHIP){
                     returnState = true;
 
                 }
                 else{return false;}
             }
             if(!isInList(new Coordinate(currentCord.column-1,currentCord.row), cords)){
-                if(field[currentCord.column-1][currentCord.row] != Field.SHIP){
+                if(isCoordinate(new Coordinate(currentCord.column-1,currentCord.row))&&field[currentCord.column-1][currentCord.row] != Field.SHIP){
                     returnState = true;
 
                 }
                 else{return false;}
             }
             if(!isInList(new Coordinate(currentCord.column+1,currentCord.row), cords)){
-                if(field[currentCord.column+1][currentCord.row] != Field.SHIP){
+                if(isCoordinate(new Coordinate(currentCord.column+1,currentCord.row)) && field[currentCord.column+1][currentCord.row] != Field.SHIP){
                     returnState = true;
 
                 }
@@ -566,7 +566,7 @@ public class BattelShip {
 
     static Field[][] intiOtherField(){
         Field [][] field = new Field[SIZE][SIZE];
-        for(int i =0;i<4;i++){
+        for(int i =1;i<5;i++){
             Coordinate startCord = getRandomCoordinate();
             Coordinate endCord = getRandomEndCoordinate(startCord,i);
             while (!noConflict(startCord,endCord,field)) {
@@ -582,8 +582,8 @@ public class BattelShip {
     static Field[][] intiOwnField(){
         Field [][] field = new Field[SIZE][SIZE];
         for(int i =0;i<4;i++){
-            Coordinate startCord = readStartCoordinate(i);
-            Coordinate endCord =readEndCoordinate(i);            
+            Coordinate startCord = readStartCoordinate(i+1);
+            Coordinate endCord =readEndCoordinate(i+1);            
             while (!noConflict(startCord,endCord,field)) {
                 startCord = readStartCoordinate(i);
                 endCord =readEndCoordinate(i);  
