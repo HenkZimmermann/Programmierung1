@@ -5,6 +5,8 @@ public class Rekursion {
        
     public record SignlyLinkedList(ListNode root){}
 
+    public record TournamentNode(TournamentNode left, TournamentNode right, String winner, int points){}
+
     static SignlyLinkedList addFirst (final SignlyLinkedList list, final int value){
         ListNode node = new ListNode(value, list.root());
 
@@ -43,6 +45,20 @@ public class Rekursion {
         return new SignlyLinkedList(node);
 
     }
+
+
+    static boolean finished(final TournamentNode root){
+        if(root.winner != null){
+            return true;
+        }
+        else if(!finished(root.left())){
+            return finished(root.left());
+        }else if(!finished(root.right())){
+            return finished(root.right());
+        }
+    }
+
+    
 
 
 
